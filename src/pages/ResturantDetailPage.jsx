@@ -8,10 +8,9 @@ function ResturantDetailPage() {
     const { restId } = useParams()
     const { restaurantsData, navigate } = useResturant();
 
-    const resturant = restaurantsData
-        .find((resturant) => resturant.id === parseInt(restId))
-
-    const avgRatings = resturant.ratings.reduce((total, curr) => total + curr.rating, 0) / resturant.ratings.length
+    const resturant = restaurantsData.find((resturant) => resturant.id === parseInt(restId))
+    const totalRatings = resturant.ratings.reduce((total, curr) => total + parseInt(curr.rating), 0)
+    const avgRatings = Math.ceil(totalRatings / resturant.ratings.length)
     const [showAddReview, setShowAddReview] = useState(false)
     return (
         <div className="Resturant__detail__page z-0 px-[10rem] py-[5rem] relative">
