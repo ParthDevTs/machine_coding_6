@@ -1,17 +1,29 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { cuisineData, restaurantsData } from "../data/resturantData";
+import { cuisineData, restaurantsData as restData } from "../data/resturantData";
 import { useNavigate } from "react-router-dom";
 
 
 const ResturantContext = createContext({
-    cuisineData: cuisineData,
-    restaurantsData: restaurantsData
+    cuisineData: cuisineData
 })
 
 export function ResturantProvider({ children }) {
+    const [restaurantsData, setRestaurantsData] = useState(restData)
     const [selectedCuisineID, setSelectedCuisineID] = useState();
     const [selectedCuisineResturants, setSelectedCuisineResturants] = useState([])
     const navigate = useNavigate()
+
+    const addNewReviewHandler = (rating, resturantId) => {
+        const newRestArray = restaurantsData.map((resturant) => {
+            if (resturant.id === parseInt(resturantId)) {
+                return { ...resturant, ratings: [...resturant.ratings, rating] }
+            } else {
+                return resturant
+            }
+        })
+        setRestaurantsData(newRestArray)
+
+    }
 
 
     useEffect(() => {
@@ -22,6 +34,7 @@ export function ResturantProvider({ children }) {
             setSelectedCuisineResturants(filteredResturants)
         }
         filterResturantsByCuisineId()
+        // eslint-disable-next-line
     }, [selectedCuisineID])
 
     return (
@@ -32,7 +45,8 @@ export function ResturantProvider({ children }) {
                 restaurantsData,
                 selectedCuisineID,
                 setSelectedCuisineID,
-                navigate
+                navigate,
+                addNewReviewHandler
             }}>
             {children}
         </ResturantContext.Provider>

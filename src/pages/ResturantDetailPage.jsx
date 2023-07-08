@@ -12,11 +12,10 @@ function ResturantDetailPage() {
         .find((resturant) => resturant.id === parseInt(restId))
 
     const avgRatings = resturant.ratings.reduce((total, curr) => total + curr.rating, 0) / resturant.ratings.length
-
     const [showAddReview, setShowAddReview] = useState(false)
     return (
-        <div className="Resturant__detail__page px-[10rem] py-[5rem] relative">
-            {showAddReview && <AddReview />}
+        <div className="Resturant__detail__page z-0 px-[10rem] py-[5rem] relative">
+            {showAddReview && <AddReview setter={setShowAddReview} resturantId={restId} />}
             <button
                 className="absolute top-[3rem] left-[6rem] transition text-slate-500 hover:text-black"
                 onClick={() => navigate("/")}>
@@ -28,7 +27,9 @@ function ResturantDetailPage() {
                 <header className="resturantDetailHeader flex items-center">
                     <div className="left__section">
                         <h1 className="text-4xl font-bold">{resturant.name}</h1>
-                        <p className="text-sm text-slate-600 text-left">{resturant.menu.map(item => `${item.name} `)}</p>
+                        <p className="text-sm text-slate-600 text-left">
+                            {resturant.menu.map((item, index) => <span key={index}> {item.name} </span>)}
+                        </p>
                         <p className="text-sm text-slate-600 text-left">{resturant.address}</p>
                         <p className="text-sm text-slate-600 text-left">Average Ratings: {avgRatings}</p>
                     </div>
@@ -41,8 +42,8 @@ function ResturantDetailPage() {
                 <div className="spacer w-full bg-black h-[1px] mt-4"></div>
                 <h2 className="text-xl font-bold mt-4">Reviews</h2>
                 <div className="reviews mt-1 flex flex-col gap-4">
-                    {resturant.ratings.map((rating) => {
-                        return <Review rating={rating} />
+                    {resturant.ratings.map((rating, index) => {
+                        return <Review key={index} rating={rating} />
                     })}
                 </div>
             </div>}
