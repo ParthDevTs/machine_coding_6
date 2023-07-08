@@ -10,7 +10,7 @@ function ResturantDetailPage() {
 
     const resturant = restaurantsData.find((resturant) => resturant.id === parseInt(restId))
     const totalRatings = resturant.ratings.reduce((total, curr) => total + parseInt(curr.rating), 0)
-    const avgRatings = Math.ceil(totalRatings / resturant.ratings.length)
+    const avgRatings = Math.round(totalRatings / resturant.ratings.length)
     const [showAddReview, setShowAddReview] = useState(false)
     return (
         <div className="Resturant__detail__page z-0 px-[10rem] py-[5rem] relative">
