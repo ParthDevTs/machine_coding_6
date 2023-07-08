@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useResturant } from '../context/ResturantContext'
 import Review from '../components/Review';
@@ -7,10 +7,16 @@ import AddReview from '../components/AddReview';
 function ResturantDetailPage() {
     const { restId } = useParams()
     const { restaurantsData, navigate } = useResturant();
+    const [avgRatings, setAvgRatings] = useState();
 
     const resturant = restaurantsData.find((resturant) => resturant.id === parseInt(restId))
-    const totalRatings = resturant.ratings.reduce((total, curr) => total + parseInt(curr.rating), 0)
-    const avgRatings = Math.round(totalRatings / resturant.ratings.length)
+
+
+    useEffect(() => {
+        const totalRatings = resturant.ratings.reduce((total, curr) => total + parseInt(curr.rating), 0)
+        const avg = Math.round(totalRatings / resturant.ratings.length)
+        setAvgRatings(avg)
+    }, [resturant])
     const [showAddReview, setShowAddReview] = useState(false)
     return (
         <div className="Resturant__detail__page z-0 px-[10rem] py-[5rem] relative">
@@ -40,7 +46,7 @@ function ResturantDetailPage() {
                 </header>
                 <div className="spacer w-full bg-black h-[1px] mt-4"></div>
                 <h2 className="text-xl font-bold mt-4">Reviews</h2>
-                <div className="reviews mt-1 flex flex-col gap-4">
+                <div className="reviews mt-1 flex flex-col-reverse gap-4">
                     {resturant.ratings.map((rating, index) => {
                         return <Review key={index} rating={rating} />
                     })}
