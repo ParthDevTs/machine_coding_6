@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function DisplayresturantDetails({ resturantData }) {
+    const navigate = useNavigate();
     return (
-        <div className="ResturantTab flex flex-col gap-4">
+        <div onClick={() => navigate(`/resturant/${resturantData.id}`)} className="ResturantTab flex flex-col gap-4 cursor-pointer">
             <h1 className="font-bold text-xl">Dishes by {resturantData.name}</h1>
             <ul className="menu flex gap-4">
                 {resturantData?.menu?.map((menuItem, index) => {
